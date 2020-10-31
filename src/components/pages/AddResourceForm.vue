@@ -24,21 +24,60 @@ export default {
     return {
       name: '',
       link: '',
-      description: ''
+      description: '',
+      formValid: false,
+      errors: []
     };
   },
   methods: {
     addNewResource(e) {
       e.preventDefault();
-      this.$emit(
-        'submit-new-resource-form',
-        this.name,
-        this.description,
-        this.link
-      );
-      this.name = '';
-      this.description = '';
-      this.link = '';
+      this.validateForm();
+      if (this.formValid) {
+        this.$emit(
+          'submit-new-resource-form',
+          this.name,
+          this.description,
+          this.link
+        );
+        this.name = '';
+        this.description = '';
+        this.link = '';
+      } else {
+        this.$emit('error-alert', this.errors);
+      }
+    },
+    validateName() {
+      if (this.name.length == 0) {
+        this.errors.push('The name input is empty');
+      }
+    },
+    validateLink() {
+      if (this.link.length == 0) {
+        this.errors.push('The link input is empty');
+      }
+      if (this.link.includes('http://') || this.link.includes('https://')) {
+        return null;
+      } else {
+        this.errors.push('The URL must include "http://" or "https://"');
+      }
+    },
+    validateDesc() {
+      if (this.description.length < 1) {
+        this.errors.push('The description field cannot be empty');
+      }
+    },
+    validateForm() {
+      this.errors = [];
+      this.validateName();
+      this.validateLink();
+      this.validateDesc();
+
+      if (this.errors.length == 0) {
+        this.formValid = true;
+      } else {
+        this.formValid = false;
+      }
     }
   }
 };

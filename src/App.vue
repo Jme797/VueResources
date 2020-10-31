@@ -1,4 +1,9 @@
 <template>
+  <AlertDialog
+    v-if="showAlert"
+    :errors="errorMessages"
+    @confirmErrors="showAlert = false"
+  />
   <TheHeader />
   <PageSelector
     @toggleShowResources="toggleShowResourcesDisplay"
@@ -12,11 +17,15 @@
       :name="i.title"
       :description="i.description"
       :link="i.link"
+      @deleteElement="deleteElement"
     >
     </StoredResources>
   </div>
   <div v-if="showAddResource">
-    <AddResourceForm @submitNewResourceForm="submitNewResourceForm" />
+    <AddResourceForm
+      @submitNewResourceForm="submitNewResourceForm"
+      @errorAlert="showAlertFunction"
+    />
   </div>
 </template>
 
@@ -50,8 +59,10 @@ export default {
           link: 'https://google.co.uk/'
         }
       ],
+      errorMessages: [],
       showStoredResources: true,
-      showAddResource: false
+      showAddResource: false,
+      showAlert: false
     };
   },
   methods: {
@@ -72,6 +83,14 @@ export default {
       };
       this.storedResources.push(resource);
       this.toggleShowResourcesDisplay();
+    },
+    showAlertFunction(errorArray) {
+      this.showAlert = true;
+      this.errorMessages = errorArray;
+    },
+    deleteElement(id) {
+      let i = this.storedResources.findIndex(element => element.id == id);
+      this.storedResources.splice(i, 1);
     }
   }
 };
@@ -113,6 +132,8 @@ button {
   cursor: pointer;
   outline: none;
   min-width: 170px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 .rightAlignButton {
   display: block;
