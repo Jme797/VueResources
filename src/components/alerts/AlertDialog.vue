@@ -1,20 +1,22 @@
 <template>
-  <div class="greyBack">
-    <section>
-      <h2>There was an issue</h2>
-      <div class="cont">
-        <h3>The following problems we're found</h3>
-        <ul>
-          <li v-for="i in errors" :key="i.indexOf()">{{ i }}</li>
-        </ul>
-      </div>
-      <div class="rightAlignButton">
-        <button class="coloredButton" @click="this.$emit('confirm-errors')">
-          Close
-        </button>
-      </div>
-    </section>
-  </div>
+  <teleport to="body">
+    <div class="greyBack">
+      <section>
+        <h2>There was an issue</h2>
+        <div class="cont">
+          <h3>The following problems we're found</h3>
+          <ul>
+            <li v-for="i in errors" :key="i.indexOf()">{{ i }}</li>
+          </ul>
+        </div>
+        <div class="rightAlignButton">
+          <button class="coloredButton" @click="this.$emit('confirm-errors')">
+            Close
+          </button>
+        </div>
+      </section>
+    </div>
+  </teleport>
 </template>
 
 <script>
@@ -53,7 +55,7 @@ li {
   color: rgb(206, 124, 124);
 }
 .greyBack {
-  background-color: rgba(0, 0, 0, 0.308);
+  background-color: rgba(0, 0, 0, 0.247);
   height: 100vh;
   width: 100vw;
   position: fixed;
